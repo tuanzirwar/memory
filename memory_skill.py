@@ -1149,10 +1149,11 @@ class MemorySkill:
 
             # V5: Teleport injection（强化种子节点，防止权重退化）
             for kw in keywords_set:
+                seed_prob = (1.0 / len(keywords_set)) * (1 - DAMPING)
                 if kw in new_probs:
-                    new_probs[kw] += (1.0 / len(keywords_set)) * (1 - DAMPING)
-                elif kw.startswith('ctx'):
-                    new_probs[kw] = (1.0 / len(keywords_set)) * (1 - DAMPING)
+                    new_probs[kw] += seed_prob
+                else:
+                    new_probs[kw] = seed_prob
 
             # V5: Convergence check（L1 delta < threshold 时提前停止）
             if iteration > 0:
